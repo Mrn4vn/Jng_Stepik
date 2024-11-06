@@ -1,12 +1,5 @@
-from python:3.8.6
+FROM nginx:1.19.6-alpine
 
-RUN apt-get update && apt-get install -y postgresql-contrib
-RUN pip3 install --upgrade pip
-
-COPY ./backend/ ./
-RUN pip3 install -r requirements.txt
-
-COPY wait-for-postgres.sh .
-RUN chmod +x wait-for-postgres.sh
-
-RUN pip3 install gunicorn
+COPY ./build /var/www
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
